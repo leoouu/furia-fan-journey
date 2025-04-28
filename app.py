@@ -1,53 +1,67 @@
 from flask import Flask, send_from_directory, request, jsonify
 from flask_cors import CORS
 import os
-import json
-import requests
 import psycopg2
-from dotenv import load_dotenv
 from urllib.parse import urlparse
+import requests
+from dotenv import load_dotenv
 
-# Carrega variáveis do .env
+# Carregar variáveis de ambiente
 load_dotenv()
 
 app = Flask(__name__, static_folder='', static_url_path='/')
 CORS(app)
 
 OCR_API_KEY = os.getenv('OCR_API_KEY')
+DATABASE_URL = os.getenv('DATABASE_URL')
 
-# Banco de dados PostgreSQL
-
+# Função para conectar ao PostgreSQL
 def get_db_connection():
-    db_url = os.getenv('DATABASE_URL')
-    if not db_url:
+    if not DATABASE_URL:
         raise Exception("DATABASE_URL não configurada!")
 
-    result = urlparse(db_url)
+    result = urlparse(DATABASE_URL)
+    username = result.username
+    password = result.password
+    database = result.path[1:]
+    hostname = result.hostname
+    port = result.port
 
     conn = psycopg2.connect(
-        database=result.path.lstrip('/'),
-        user=result.username,
-        password=result.password,
-        host=result.hostname,
-        port=result.port
+        database=database,
+        user=username,
+        password=password,
+        host=hostname,
+        port=port
     )
     return conn
 
-
-# Cria a tabela caso não exista
+# Função para criar a tabela se não existir
 def criar_tabela():
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute('''
+    cur.execute("""
         CREATE TABLE IF NOT EXISTS perfis (
             id SERIAL PRIMARY KEY,
-            dados JSONB NOT NULL
+            nome TEXT,
+            cpf TEXT,
+            idade INTEGER,
+            estado TEXT,
+            cidade TEXT,
+            xp INTEGER,
+            carimbos TEXT[],
+            redes TEXT[],
+            atividades TEXT[],
+            compras TEXT[],
+            assistiu_evento TEXT,
+            eventos_assistidos TEXT[]
         );
-    ''')
+    """)
     conn.commit()
     cur.close()
     conn.close()
 
+# Criar a tabela ao iniciar o servidor
 criar_tabela()
 
 @app.route('/')
@@ -67,7 +81,28 @@ def salvar_perfil():
 
         conn = get_db_connection()
         cur = conn.cursor()
-        cur.execute('INSERT INTO perfis (dados) VALUES (%s)', [json.dumps(dados)])
+
+        cur.execute("""
+            INSERT INTO perfis (
+                nome, cpf, idade, estado, cidade, xp,
+                carimbos, redes, atividades, compras,
+                assistiu_evento, eventos_assistidos
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """, (
+            dados.get('nome'),
+            dados.get('cpf'),
+            int(dados.get('idade')) if dados.get('idade') else None,
+            dados.get('estado'),
+            dados.get('cidade'),
+            int(dados.get('xp')) if dados.get('xp') else 0,
+            dados.get('carimbos', []),
+            dados.get('redes', []),
+            dados.get('atividades', []),
+            dados.get('compras', []),
+            dados.get('assistiuEvento'),
+            dados.get('eventosAssistidos', [])
+        ))
+
         conn.commit()
         cur.close()
         conn.close()
@@ -75,24 +110,8 @@ def salvar_perfil():
         return jsonify({'mensagem': 'Perfil salvo com sucesso!'}), 201
 
     except Exception as e:
-        print('Erro interno ao salvar perfil:', e)
+        print('Erro interno:', e)
         return jsonify({'erro': 'Erro interno no servidor'}), 500
-
-@app.route('/data/perfis.json')
-def listar_perfis():
-    try:
-        conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute('SELECT dados FROM perfis')
-        registros = cur.fetchall()
-        perfis = [r[0] for r in registros]
-        cur.close()
-        conn.close()
-
-        return jsonify(perfis)
-    except Exception as e:
-        print('Erro ao buscar perfis:', e)
-        return jsonify([])
 
 @app.route('/validar_documento', methods=['POST'])
 def validar_documento():
@@ -121,7 +140,7 @@ def validar_documento():
             return jsonify({'sucesso': False})
 
     except Exception as e:
-        print('Erro interno ao validar documento:', e)
+        print('Erro interno:', e)
         return jsonify({'sucesso': False, 'erro': 'Erro interno ao validar'}), 500
 
 if __name__ == '__main__':
