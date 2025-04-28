@@ -4,11 +4,15 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 let todosPerfis = [];
-let estadosCache = {}, cidadesCache = {}, eventosCache = {}, comprasCache = {}, assistidosCache = {};
+let estadosCache = {};
+let cidadesCache = {};
+let eventosCache = {};
+let comprasCache = {};
+let assistidosCache = {};
 
 async function carregarMetricas() {
   try {
-    const response = await fetch('data/perfis.json');
+    const response = await fetch('/listar_perfis');
     const perfis = await response.json();
     todosPerfis = perfis;
 
@@ -19,38 +23,33 @@ async function carregarMetricas() {
 
     document.getElementById('totalFas').textContent = perfis.length;
 
-    const estados = {}, cidades = {}, eventos = {}, compras = {}, assistidos = {};
-    let cadastrosHoje = 0, somaIdades = 0, totalIdades = 0;
+    const estados = {};
+    const cidades = {};
+    const eventos = {};
+    const compras = {};
+    const assistidos = {};
+    let cadastrosHoje = 0;
+    let somaIdades = 0;
+    let totalIdades = 0;
+
     const hoje = new Date().toISOString().split('T')[0];
 
     perfis.forEach(perfil => {
       if (perfil.estado) estados[perfil.estado] = (estados[perfil.estado] || 0) + 1;
       if (perfil.cidade) cidades[perfil.cidade] = (cidades[perfil.cidade] || 0) + 1;
-    
-      if (Array.isArray(perfil.atividades)) {
-        perfil.atividades.forEach(a => {
-          if (a !== "Nenhum") eventos[a] = (eventos[a] || 0) + 1;
-        });
+      if (perfil.atividades) perfil.atividades.forEach(ev => eventos[ev] = (eventos[ev] || 0) + 1);
+      if (perfil.compras) perfil.compras.forEach(cp => compras[cp] = (compras[cp] || 0) + 1);
+      if (perfil.eventos_assistidos) perfil.eventos_assistidos.forEach(as => assistidos[as] = (assistidos[as] || 0) + 1);
+
+      if (perfil.data_cadastro && perfil.data_cadastro.startsWith(hoje)) {
+        cadastrosHoje++;
       }
-    
-      if (Array.isArray(perfil.compras)) {
-        perfil.compras.forEach(c => {
-          if (c !== "Nenhum") compras[c] = (compras[c] || 0) + 1;
-        });
-      }
-    
-      if (Array.isArray(perfil.eventosAssistidos)) {
-        perfil.eventosAssistidos.forEach(a => {
-          if (a !== "Nenhum") assistidos[a] = (assistidos[a] || 0) + 1;
-        });
-      }
-    
-      if (perfil.dataCadastro && perfil.dataCadastro.startsWith(hoje)) cadastrosHoje++;
+
       if (perfil.idade && !isNaN(perfil.idade)) {
         somaIdades += parseInt(perfil.idade);
         totalIdades++;
       }
-    });    
+    });
 
     estadosCache = estados;
     cidadesCache = cidades;
@@ -71,11 +70,19 @@ async function carregarMetricas() {
 
     gerarGraficoEstados(estados);
     gerarTop5(estados, cidades, eventos, compras, assistidos);
-    gerarGraficosDoughnut(compras, assistidos);
     preencherFiltros(estados, cidades);
 
   } catch (error) {
     console.error("Erro ao carregar métricas:", error);
+    Swal.fire({
+      background: '#111',
+      color: '#fff',
+      title: '❌ Erro!',
+      text: 'Não foi possível carregar os dados do Admin.',
+      icon: 'error',
+      confirmButtonColor: '#f00',
+      confirmButtonText: 'Ok'
+    });
   }
 }
 
@@ -88,7 +95,7 @@ function gerarGraficoEstados(estados) {
       datasets: [{
         label: 'Número de Fãs por Estado',
         data: Object.values(estados),
-        backgroundColor: 'rgba(255, 0, 0, 0.7)'
+        backgroundColor: 'rgba(255, 0, 0, 0.6)'
       }]
     },
     options: {
@@ -113,44 +120,19 @@ function gerarTop5(estados, cidades, eventos, compras, assistidos) {
 }
 
 function gerarLista(id, objeto) {
-  const lista = Object.entries(objeto).sort((a, b) => b[1] - a[1]).slice(0, 5);
+  const lista = Object.entries(objeto)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5);
+
   const ul = document.getElementById(id);
-  if (!ul) return;
   ul.innerHTML = "";
+
   lista.forEach(([item, count], index) => {
     const li = document.createElement('li');
     li.textContent = `${index + 1}° ${item} - ${count} fãs`;
     ul.appendChild(li);
   });
 }
-
-function gerarGraficosDoughnut(compras, assistidos) {
-  const comprasTop3 = Object.entries(compras).sort((a, b) => b[1] - a[1]).slice(0, 3);
-  const assistidosTop3 = Object.entries(assistidos).sort((a, b) => b[1] - a[1]).slice(0, 3);
-
-  new Chart(document.getElementById('graficoCompras').getContext('2d'), {
-    type: 'doughnut',
-    data: {
-      labels: comprasTop3.map(c => c[0]),
-      datasets: [{
-        data: comprasTop3.map(c => c[1]),
-        backgroundColor: ['#ff0000', '#ff6600', '#ffaa00']
-      }]
-    }
-  });
-
-  new Chart(document.getElementById('graficoAssistidos').getContext('2d'), {
-    type: 'doughnut',
-    data: {
-      labels: assistidosTop3.map(a => a[0]),
-      datasets: [{
-        data: assistidosTop3.map(a => a[1]),
-        backgroundColor: ['#ff0000', '#ff6600', '#ffaa00']
-      }]
-    }
-  });
-}
-
 
 function preencherFiltros(estados, cidades) {
   const estadoSelect = document.getElementById('filtroEstado');
@@ -202,6 +184,7 @@ function aplicarFiltro() {
 
   document.getElementById('resultadoFiltro').textContent = `🎯 Fãs encontrados: ${filtrados.length}`;
 }
+
 
 function configurarBotoesDownload() {
   document.getElementById('btnBaixarJSON').addEventListener('click', () => {

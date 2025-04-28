@@ -2,11 +2,12 @@ from flask import Flask, send_from_directory, request, jsonify
 from flask_cors import CORS
 import os
 import psycopg2
-from urllib.parse import urlparse
+import json
 import requests
+from urllib.parse import urlparse
 from dotenv import load_dotenv
 
-# Carregar variáveis de ambiente
+# Carrega variáveis do .env
 load_dotenv()
 
 app = Flask(__name__, static_folder='', static_url_path='/')
@@ -15,53 +16,46 @@ CORS(app)
 OCR_API_KEY = os.getenv('OCR_API_KEY')
 DATABASE_URL = os.getenv('DATABASE_URL')
 
-# Função para conectar ao PostgreSQL
 def get_db_connection():
     if not DATABASE_URL:
         raise Exception("DATABASE_URL não configurada!")
-
+    
     result = urlparse(DATABASE_URL)
-    username = result.username
-    password = result.password
-    database = result.path[1:]
-    hostname = result.hostname
-    port = result.port
 
     conn = psycopg2.connect(
-        database=database,
-        user=username,
-        password=password,
-        host=hostname,
-        port=port
+        dbname=result.path[1:],
+        user=result.username,
+        password=result.password,
+        host=result.hostname,
+        port=result.port
     )
     return conn
 
-# Função para criar a tabela se não existir
 def criar_tabela():
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute("""
+    cur.execute('''
         CREATE TABLE IF NOT EXISTS perfis (
             id SERIAL PRIMARY KEY,
             nome TEXT,
             cpf TEXT,
-            idade INTEGER,
+            idade INT,
             estado TEXT,
             cidade TEXT,
-            xp INTEGER,
+            xp INT,
             carimbos TEXT[],
             redes TEXT[],
             atividades TEXT[],
             compras TEXT[],
             assistiu_evento TEXT,
-            eventos_assistidos TEXT[]
-        );
-    """)
+            eventos_assistidos TEXT[],
+            data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
     conn.commit()
     cur.close()
     conn.close()
 
-# Criar a tabela ao iniciar o servidor
 criar_tabela()
 
 @app.route('/')
@@ -82,13 +76,10 @@ def salvar_perfil():
         conn = get_db_connection()
         cur = conn.cursor()
 
-        cur.execute("""
-            INSERT INTO perfis (
-                nome, cpf, idade, estado, cidade, xp,
-                carimbos, redes, atividades, compras,
-                assistiu_evento, eventos_assistidos
-            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-        """, (
+        cur.execute('''
+            INSERT INTO perfis (nome, cpf, idade, estado, cidade, xp, carimbos, redes, atividades, compras, assistiu_evento, eventos_assistidos)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        ''', (
             dados.get('nome'),
             dados.get('cpf'),
             int(dados.get('idade')) if dados.get('idade') else None,
@@ -110,7 +101,7 @@ def salvar_perfil():
         return jsonify({'mensagem': 'Perfil salvo com sucesso!'}), 201
 
     except Exception as e:
-        print('Erro interno:', e)
+        print('Erro interno ao salvar perfil:', e)
         return jsonify({'erro': 'Erro interno no servidor'}), 500
 
 @app.route('/validar_documento', methods=['POST'])
@@ -140,8 +131,41 @@ def validar_documento():
             return jsonify({'sucesso': False})
 
     except Exception as e:
-        print('Erro interno:', e)
+        print('Erro interno ao validar documento:', e)
         return jsonify({'sucesso': False, 'erro': 'Erro interno ao validar'}), 500
+
+@app.route('/listar_perfis', methods=['GET'])
+def listar_perfis():
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute('SELECT * FROM perfis')
+        rows = cur.fetchall()
+
+        colnames = [desc[0] for desc in cur.description]
+        perfis = []
+        for row in rows:
+            perfil = dict(zip(colnames, row))
+            # Ajustar tipos para garantir compatibilidade no frontend
+            if isinstance(perfil.get('carimbos'), list) and perfil['carimbos'] is not None:
+                perfil['carimbos'] = list(perfil['carimbos'])
+            if isinstance(perfil.get('redes'), list) and perfil['redes'] is not None:
+                perfil['redes'] = list(perfil['redes'])
+            if isinstance(perfil.get('atividades'), list) and perfil['atividades'] is not None:
+                perfil['atividades'] = list(perfil['atividades'])
+            if isinstance(perfil.get('compras'), list) and perfil['compras'] is not None:
+                perfil['compras'] = list(perfil['compras'])
+            if isinstance(perfil.get('eventos_assistidos'), list) and perfil['eventos_assistidos'] is not None:
+                perfil['eventos_assistidos'] = list(perfil['eventos_assistidos'])
+            perfis.append(perfil)
+
+        cur.close()
+        conn.close()
+
+        return jsonify(perfis)
+    except Exception as e:
+        print('Erro ao listar perfis:', e)
+        return jsonify([])
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
