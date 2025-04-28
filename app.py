@@ -5,6 +5,7 @@ import json
 import requests
 import psycopg2
 from dotenv import load_dotenv
+from urllib.parse import urlparse
 
 # Carrega variáveis do .env
 load_dotenv()
@@ -15,15 +16,23 @@ CORS(app)
 OCR_API_KEY = os.getenv('OCR_API_KEY')
 
 # Banco de dados PostgreSQL
+
 def get_db_connection():
+    db_url = os.getenv('DATABASE_URL')
+    if not db_url:
+        raise Exception("DATABASE_URL não configurada!")
+
+    result = urlparse(db_url)
+
     conn = psycopg2.connect(
-        host=os.getenv('DB_HOST'),
-        port=os.getenv('DB_PORT'),
-        dbname=os.getenv('DB_NAME'),
-        user=os.getenv('DB_USER'),
-        password=os.getenv('DB_PASSWORD')
+        database=result.path.lstrip('/'),
+        user=result.username,
+        password=result.password,
+        host=result.hostname,
+        port=result.port
     )
     return conn
+
 
 # Cria a tabela caso não exista
 def criar_tabela():
