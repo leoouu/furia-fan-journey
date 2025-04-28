@@ -1,0 +1,22 @@
+# Ignorar variáveis de ambiente
+.env
+
+# Ignorar cache do Python
+__pycache__/
+*.pyc
+
+# Ignorar pastas e arquivos temporários
+*.log
+*.tmp
+*.bak
+
+# Ignorar pastas de IDEs
+.vscode/
+.idea/
+
+# Ignorar ambiente virtual (caso tenha)
+venv/
+.env/
+
+# Ignorar o data/perfis.json (se quiser evitar subir dados pessoais dos fãs)
+data/perfis.json

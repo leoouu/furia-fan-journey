@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro Inicial - FURIA FAN JOURNEY</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="background">
+
+  <a href="admin.html" class="admin-btn">🔧 Admin</a>
+
+  <div class="progress-container">
+    <div class="progress-bar-background">
+      <div id="progressBar" class="progress-bar-fill"></div>
+    </div>
+  </div>
+
+  <div class="container center">
+    <h1>📄 Cadastro Inicial</h1>
+    <form id="formCadastro">
+      <input type="text" id="nome" placeholder="Seu Nome Completo" required autocomplete="off">
+      <input type="text" id="cpf" placeholder="Seu CPF" required autocomplete="off">
+      <input type="number" id="idade" placeholder="Sua Idade" required autocomplete="off">
+
+      <select id="estadoSelect" required>
+        <option value="">Selecione seu Estado</option>
+      </select>
+
+      <select id="cidadeSelect" required disabled>
+        <option value="">Selecione sua Cidade</option>
+      </select>
+
+      <button type="submit">Próxima Etapa ➡️</button>
+    </form>
+  </div>
+
+  <script src="js/cadastro.js" defer></script>
+</body>
+</html>

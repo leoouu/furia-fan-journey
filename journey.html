@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fan Journey - FURIA FAN PASSPORT</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script> <!-- Para gerar PDF -->
+</head>
+<body class="background">
+
+  <a href="admin.html" class="admin-btn">🔧 Admin</a>
+
+  <div class="progress-container">
+    <div class="progress-bar-background">
+      <div id="progressBar" class="progress-bar-fill" style="width: 100%;"></div>
+    </div>
+  </div>
+
+  <div class="container center" id="containerPassaporte">
+    <h1 style="margin-bottom: 20px;">🏴 Seu Passaporte FURIA 🏴</h1>
+
+    <div id="passaporte" class="passaporte-box"></div>
+
+    <h2 style="margin-top: 30px;">🎯 Suas Conquistas</h2>
+    <div id="carimbos" class="rewards"></div>
+
+    <h2 style="margin-top: 30px;">🏆 Suas Recompensas</h2>
+    <div id="recompensas" class="rewards"></div>
+
+    <h2 style="margin-top: 40px;">🌐 Conheça Mais da FURIA</h2>
+    <div class="furia-hub">
+      <a href="https://www.furia.gg/" target="_blank" class="furia-link">🏴 Site Oficial</a>
+      <a href="https://www.instagram.com/furiagg/" target="_blank" class="furia-link">📸 Instagram</a>
+      <a href="https://twitter.com/furia" target="_blank" class="furia-link">🐦 Twitter / X</a>
+      <a href="https://www.youtube.com/@FURIAgg" target="_blank" class="furia-link">🎥 YouTube</a>
+      <a href="https://www.twitch.tv/furiatv" target="_blank" class="furia-link">🎮 Twitch</a>
+    </div>
+
+
+    <div style="margin-top: 30px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+      <button id="btnBaixarPDF" class="action-button">📄 Baixar Passaporte</button>
+      <button id="btnFinalizar" class="action-button">Salvar e Enviar 🚀</button>
+    </div>
+  </div>
+
+  <!-- MODAL DE REDES VINCULADAS -->
+  <div id="modalRedes">
+    <div class="modal-content">
+      <button id="closeModal">❌</button>
+      <h2>🔗 Redes Vinculadas</h2>
+      <div id="conteudoModalRedes" style="margin-top: 20px;"></div>
+    </div>
+  </div>
+
+  <script src="js/journey.js" defer></script>
+
+</body>
+</html>

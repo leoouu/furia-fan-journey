@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - FURIA Fan Journey</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="background">
+
+  <div class="container center">
+    <h1>📊 Painel Administrativo</h1>
+
+    <div class="admin-metrics">
+      <p><strong>Total de Fãs:</strong> <span id="totalFas">Carregando...</span></p>
+      <p><strong>Estado com mais fãs:</strong> <span id="estadoTop">Carregando...</span></p>
+      <p><strong>Cidade com mais fãs:</strong> <span id="cidadeTop">Carregando...</span></p>
+      <p><strong>Cadastros Hoje:</strong> <span id="cadastrosHoje">Carregando...</span></p>
+      <p><strong>Média de Idade:</strong> <span id="mediaIdade">Carregando...</span></p>
+    </div>
+
+    <div class="ranking">
+      <h2>🏆 Top 5 Estados</h2>
+      <ul id="topEstados"></ul>
+
+      <h2>🏆 Top 5 Cidades</h2>
+      <ul id="topCidades"></ul>
+
+      <h2>🏆 Top 5 Eventos Participados</h2>
+      <ul id="topEventos"></ul>
+
+      <h2>🏆 Top 5 Produtos Comprados</h2>
+      <ul id="topCompras"></ul>
+
+      <h2>🏆 Top 5 Eventos Assistidos</h2>
+      <ul id="topAssistidos"></ul>
+    </div>
+
+    <div class="filters">
+      <h2>🔎 Filtros</h2>
+      <select id="filtroEstado">
+        <option value="">Filtrar por Estado</option>
+      </select>
+      <select id="filtroCidade" disabled>
+        <option value="">Filtrar por Cidade</option>
+      </select>
+      <p id="resultadoFiltro" style="margin-top: 10px;">Selecione filtros para ver o número de fãs.</p>
+    </div>
+
+    <canvas id="graficoEstados" style="margin-top:30px;"></canvas>
+
+    <div class="graficos-duplos">
+      <canvas id="graficoCompras" style="max-width: 400px;"></canvas>
+      <canvas id="graficoAssistidos" style="max-width: 400px;"></canvas>
+    </div>
+
+    <div style="margin-top: 30px;">
+      <button id="btnBaixarJSON" class="action-button">⬇️ Baixar Relatório JSON</button>
+      <button id="btnBaixarCSV" class="action-button">⬇️ Baixar Relatório CSV</button>
+      <button id="btnTop5JSON" class="action-button">⬇️ Baixar Top5 JSON</button>
+      <button id="btnTop5CSV" class="action-button">⬇️ Baixar Top5 CSV</button>
+    </div>
+
+    <div style="margin-top: 20px;">
+      <a href="index.html" class="download-wallpaper-btn">Voltar ao Início 🔙</a>
+    </div>
+  </div>
+
+  <script src="js/admin.js" defer></script>
+
+</body>
+</html>

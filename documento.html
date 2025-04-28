@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Validação de Documento - FURIA FAN JOURNEY</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="background">
+
+  <a href="admin.html" class="admin-btn">🔧 Admin</a>
+
+  <div class="progress-container">
+    <div class="progress-bar-background">
+      <div id="progressBar" class="progress-bar-fill"></div>
+    </div>
+  </div>
+
+  <div class="container center">
+    <h1>🛡️ Validação de Documento</h1>
+    <form id="formDocumento" enctype="multipart/form-data">
+      <input type="file" id="documento" accept="image/*,application/pdf" required>
+      <button type="submit">Validar Documento 📄</button>
+    </form>
+  </div>
+
+  <script src="js/documento.js" defer></script>
+</body>
+</html>

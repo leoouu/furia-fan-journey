@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atividades e Compras - FURIA FAN JOURNEY</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="background">
+
+  <a href="admin.html" class="admin-btn">🔧 Admin</a>
+
+  <div class="progress-container">
+    <div class="progress-bar-background">
+      <div id="progressBar" class="progress-bar-fill"></div>
+    </div>
+  </div>
+
+  <div class="container center">
+    <h1>🎮 Atividades e Compras</h1>
+    <form id="formAtividades">
+
+      <label><strong>Eventos de eSports que participou:</strong></label>
+      <div id="atividadesTags" class="tag-container"></div>
+
+      <label style="margin-top:20px;"><strong>Produtos comprados na FURIA:</strong></label>
+      <div id="comprasTags" class="tag-container"></div>
+
+      <label style="margin-top:20px;"><strong>Você assistiu algum evento da FURIA?</strong></label>
+      <select id="assistiuEvento" required>
+        <option value="">Selecione...</option>
+        <option value="sim">Sim</option>
+        <option value="nao">Não</option>
+      </select>
+
+      <div id="divEventosAssistidos" style="display:none; margin-top:20px;">
+        <label><strong>Quais eventos assistiu?</strong></label>
+        <div id="eventosAssistidosTags" class="tag-container"></div>
+      </div>
+
+      <button type="submit" style="margin-top:20px;">Finalizar Cadastro 🚀</button>
+    </form>
+  </div>
+
+  <script src="js/atividades.js" defer></script>
+
+</body>
+</html>
