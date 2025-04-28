@@ -140,8 +140,15 @@ def validar_documento():
         }
         files = {'file': (documento.filename, documento.stream, documento.mimetype)}
 
-        response = requests.post('https://api.ocr.space/parse/image', data=payload, files=files)
+        response = requests.post('https://api.ocr.space/parse/image', data=payload, files=files, timeout=25)
+
+        if response.status_code != 200:
+            return jsonify({'sucesso': False, 'erro': 'Falha na comunicação com o OCR.'}), 502
+
         result = response.json()
+
+        if result.get('IsErroredOnProcessing'):
+            return jsonify({'sucesso': False, 'erro': 'Erro no processamento OCR.'}), 502
 
         texto = result.get('ParsedResults', [{}])[0].get('ParsedText', '')
         texto_limpo = ''.join(filter(str.isdigit, texto))
@@ -151,9 +158,12 @@ def validar_documento():
         else:
             return jsonify({'sucesso': False})
 
+    except requests.exceptions.Timeout:
+        return jsonify({'sucesso': False, 'erro': 'Timeout na comunicação OCR.'}), 504
     except Exception as e:
-        print('Erro interno ao validar documento:', e)
-        return jsonify({'sucesso': False, 'erro': 'Erro interno ao validar'}), 500
+        print('Erro interno no OCR:', e)
+        return jsonify({'sucesso': False, 'erro': 'Erro interno ao validar documento.'}), 500
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
