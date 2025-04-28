@@ -1,6 +1,4 @@
-Flask
-Flask-Cors
-gunicorn
+flask
+flask-cors
 python-dotenv
-psycopg2-binary
 requests

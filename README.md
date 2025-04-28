@@ -1,29 +1,33 @@
-# FURIA Fan Journey - Know Your Fan Project
+# FURIA Fan Journey - Know Your Fan Challenge
 
-### Projeto desenvolvido para o desafio da FURIA Tech!
+### Projeto oficial desenvolvido para o desafio técnico da FURIA Tech!
 
 ---
 
 ## 🔖 Sobre o Projeto
-O **FURIA Fan Journey** é uma aplicação web desenvolvida em **Flask + HTML/CSS/JS** que:
+O **FURIA Fan Journey** é uma plataforma web completa em **Flask + HTML/CSS/JavaScript**, que:
 
-- Realiza cadastro de fãs da FURIA.
-- Valida documentos via OCR automático.
-- Permite vincular redes sociais.
-- Coleta dados de atividades, compras e eventos assistidos.
-- Calcula XP e entrega recompensas (Certificado, Wallpapers, Troféus).
-- Gera um passaporte de fã personalizado.
-- Possui dashboard administrativo com gráficos e relatórios automáticos.
+- Realiza o cadastro de fãs com validação de dados.
+- Valida documentos e CPF via OCR automático.
+- Permite adicionar e contabilizar redes sociais vinculadas.
+- Coleta informações sobre atividades, compras e eventos assistidos.
+- Gera XP automático e atribui níveis ao fã.
+- Emite um passaporte digital personalizado.
+- Entrega recompensas virtuais baseadas na participação.
+- Disponibiliza um **painel Admin** com análises, gráficos e exportações de dados.
 
 ---
 
-## 👁 Demonstração Rápida
-- Cadastro com estado e cidade dinâmicos.
-- Validação de CPF no documento via API OCR.Space.
-- Sistema de XP com progressão de nível.
-- Ranking Top 5 Estados, Cidades, Produtos e Eventos.
-- Exportação de relatórios em **CSV** e **JSON**.
-- Modo Dark Mode visual bonito.
+## 📷 Demonstração
+- Cadastro fluido e visual responsivo.
+- Seleção automática de estados e cidades do Brasil.
+- Análise de documentos usando a API **OCR.Space**.
+- Sistema de XP e **evolução de fã**.
+- Dashboard Admin com:
+  - Top 5 Estados, Cidades, Produtos e Eventos.
+  - Gráficos dinâmicos com Chart.js.
+  - Exportação em CSV e JSON.
+  - Análise de cadastros diários e média de idade.
 
 ---
 
@@ -40,36 +44,45 @@ cd furia-fan-journey
 pip install -r requirements.txt
 ```
 
-3. Crie o arquivo `.env` baseado no `.env.example`:
+3. Configure o arquivo `.env`:
 ```bash
 cp .env.example .env
 ```
-- Adicione sua **API_KEY_OCR** no `.env`.
+Preencha o `.env` com sua chave OCR:
+```
+OCR_API_KEY=sua_chave_aqui
+```
 
-4. Rode o servidor Flask:
+4. Rode o servidor:
 ```bash
 python app.py
 ```
 
-5. Acesse o app no navegador:
+5. Acesse no navegador:
 ```url
 http://localhost:5000/
-```
 
 ---
 
-## 🎓 Tecnologias Utilizadas
+## 📚 Tecnologias Utilizadas
 - Python 3.11
 - Flask
 - Flask-CORS
-- HTML5 + CSS3 + JavaScript (Vanilla)
+- SQLite (local)
+- OCR.Space API
 - Chart.js
 - SweetAlert2
 - html2pdf.js
+- Render.com (deploy)
 
 ---
 
 ## 📅 Feito por Leonardo Gonçalves - 2025
-**Desafio FURIA Tech** - com dedicação total ❤️
+Projeto realizado com paixão pelo desafio FURIA Tech! 💥
 
+[LinkedIn](www.linkedin.com/in/leonardogonc) | [GitHub](https://github.com/leoouu)
+
+---
+
+**🚀 Let's Go FURIA!**
 

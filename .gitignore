@@ -1,22 +1,31 @@
-# Ignorar variáveis de ambiente
-.env
+.venv/
+venv/
+env/
+ENV/
 
-# Ignorar cache do Python
+
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+*.pyc
 
-# Ignorar pastas e arquivos temporários
+
+instance/
+*.db
+*.sqlite3
 *.log
-*.tmp
-*.bak
 
-# Ignorar pastas de IDEs
+
+*.env
+.env
+
+
 .vscode/
 .idea/
+*.sublime-project
+*.sublime-workspace
 
-# Ignorar ambiente virtual (caso tenha)
-venv/
-.env/
 
-# Ignorar o data/perfis.json (se quiser evitar subir dados pessoais dos fãs)
-data/perfis.json
+.DS_Store
+Thumbs.db
