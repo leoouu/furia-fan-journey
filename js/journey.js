@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       dadosFas.dataCadastro = new Date().toISOString();
 
-      await fetch('http://localhost:5000/salvar_perfil', {
+      await fetch('/salvar_perfil', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dadosFas)
