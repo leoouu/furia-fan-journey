@@ -31,7 +31,7 @@ O **FURIA Fan Journey** é uma aplicação web desenvolvida em **Flask + HTML/CS
 
 1. Clone o repositório:
 ```bash
-git clone https://github.com/leoouu/furia-fan-journey.git
+git clone https://github.com/leoouu/furia-fan-journey
 cd furia-fan-journey
 ```
 
