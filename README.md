@@ -1,88 +1,105 @@
-# FURIA Fan Journey - Know Your Fan Challenge
+# FURIA Fan Journey - Desafio Know Your Fan
 
-### Projeto oficial desenvolvido para o desafio técnico da FURIA Tech!
-
----
-
-## 🔖 Sobre o Projeto
-O **FURIA Fan Journey** é uma plataforma web completa em **Flask + HTML/CSS/JavaScript**, que:
-
-- Realiza o cadastro de fãs com validação de dados.
-- Valida documentos e CPF via OCR automático.
-- Permite adicionar e contabilizar redes sociais vinculadas.
-- Coleta informações sobre atividades, compras e eventos assistidos.
-- Gera XP automático e atribui níveis ao fã.
-- Emite um passaporte digital personalizado.
-- Entrega recompensas virtuais baseadas na participação.
-- Disponibiliza um **painel Admin** com análises, gráficos e exportações de dados.
+### Projeto oficial desenvolvido para o desafio técnico da FURIA Tech
 
 ---
 
-## 📷 Demonstração
-- Cadastro fluido e visual responsivo.
-- Seleção automática de estados e cidades do Brasil.
-- Análise de documentos usando a API **OCR.Space**.
-- Sistema de XP e **evolução de fã**.
-- Dashboard Admin com:
-  - Top 5 Estados, Cidades, Produtos e Eventos.
-  - Gráficos dinâmicos com Chart.js.
-  - Exportação em CSV e JSON.
-  - Análise de cadastros diários e média de idade.
+## 🔖 Visão Geral
+
+O **FURIA Fan Journey** é uma plataforma interativa desenvolvida com **Python (Flask)** e **tecnologias web modernas** para identificar, envolver e premiar torcedores da FURIA. O projeto simula uma jornada completa de um fã com:
+
+* Cadastro inteligente com validação por OCR de documentos
+* Integração com redes sociais (Instagram, Twitter, HLTV, Twitch)
+* Coleta de dados sobre participação em eventos, compras e comportamento
+* Sistema de XP, níveis e recompensas personalizadas
+* Geração de passaporte digital do torcedor
+* Painel **Admin** com relatórios, gráficos e exportações
+
+---
+
+## 📈 Funcionalidades
+
+### ✅ Cadastro de Fã
+
+* Nome, idade, CPF, cidade e estado
+* Validação de documento com OCR (API OCR.Space)
+* Sistema de carimbos e progresso por etapa
+
+### 👤 Vinculação de Redes Sociais
+
+* Inputs para Instagram, Twitter, Twitch, HLTV
+* Gera XP extra por integração
+
+### 🎮 Participação em Atividades
+
+* Seleção de eventos de eSports que participou ou assistiu
+* Registro de produtos comprados
+* Dados usados para métricas no Admin
+
+### 📅 Painel Administrativo
+
+* Total de cadastros, estado/cidade com mais fãs
+* Média de idade dos participantes
+* Top 5 eventos, produtos e locais
+* Gráficos dinâmicos (Chart.js)
+* Filtros por localidade
+* Exportação CSV e JSON (fãs e relatórios)
 
 ---
 
 ## 🔧 Como Rodar Localmente
 
 1. Clone o repositório:
+
 ```bash
 git clone https://github.com/leoouu/furia-fan-journey
 cd furia-fan-journey
 ```
 
 2. Instale as dependências:
+
 ```bash
 pip install -r requirements.txt
 ```
 
 3. Configure o arquivo `.env`:
+
 ```bash
 cp .env.example .env
 ```
-Preencha o `.env` com sua chave OCR:
+
+Preencha com sua chave OCR:
+
 ```
 OCR_API_KEY=sua_chave_aqui
 ```
 
-4. Rode o servidor:
+4. Execute o app:
+
 ```bash
 python app.py
 ```
 
 5. Acesse no navegador:
-```url
-http://localhost:5000/
+
+```
+http://localhost:5000
+```
 
 ---
 
-## 📚 Tecnologias Utilizadas
-- Python 3.11
-- Flask
-- Flask-CORS
-- SQLite (local)
-- OCR.Space API
-- Chart.js
-- SweetAlert2
-- html2pdf.js
-- Render.com (deploy)
+## 📊 Tecnologias Usadas
+
+* **Backend:** Python 3.11, Flask, SQLite
+* **Frontend:** HTML5, CSS3, JavaScript (Vanilla)
+* **APIs:** OCR.Space, SweetAlert2, html2pdf.js, Chart.js
+* **Infra:** Render.com (deploy gratuito)
 
 ---
 
-## 📅 Feito por Leonardo Gonçalves - 2025
-Projeto realizado com paixão pelo desafio FURIA Tech! 💥
+## 📅 Desenvolvido por Leonardo Gonçalves
 
-[LinkedIn](www.linkedin.com/in/leonardogonc) | [GitHub](https://github.com/leoouu)
+Desafio FURIA Tech 2025 ⚡️
 
----
-
-**🚀 Let's Go FURIA!**
+[LinkedIn](https://www.linkedin.com/in/leonardogonc) | [GitHub](https://github.com/leoouu)
 
